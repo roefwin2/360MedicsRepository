@@ -1,29 +1,21 @@
 package com.example.a360moviesapp.presenter.ui
 
-import android.media.Rating
 import android.os.Bundle
-import android.widget.RatingBar
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.example.a360moviesapp.R
-import com.example.a360moviesapp.data.models.NetworkMovie
+import com.example.a360moviesapp.domain.models.Movie
 import com.example.a360moviesapp.ui.theme.MoviesAppTheme
 import com.example.a360moviesapp.utils.Error
 import com.example.a360moviesapp.utils.Loading
@@ -59,7 +51,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             when (state) {
-                                is Loading<NetworkMovie> -> CircularProgressIndicator()
+                                is Loading<Movie> -> CircularProgressIndicator()
                                 is Error ->
                                     Snackbar() {
                                         Text(text = state.msg)
@@ -116,7 +108,7 @@ fun RatingItem(value : String){
 
 
 @Composable
-fun MovieItem(movie: NetworkMovie) {
+fun MovieItem(movie: Movie) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -142,11 +134,9 @@ fun MovieItem(movie: NetworkMovie) {
 fun DefaultPreview() {
     MoviesAppTheme {
         val networkMovie =
-            NetworkMovie(
-                "", "",
-                "https://m.media-amazon.com/images/M/MV5BYmZkYWRlNWQtOGY0Zi00MWZkLWJiZTktNjRjMDY4MTU2YzAyXkEyXkFqcGdeQXVyMzYzNzc1NjY@._V1_SX300.jpg",
-                "", emptyList(),
-                "top gun", "", "lourd", "","True"
+            Movie(
+                "",
+                emptyList(), "", "lourd",
             )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Column(

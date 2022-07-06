@@ -1,9 +1,10 @@
 package com.example.a360moviesapp.presenter.ui
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.a360moviesapp.data.models.NetworkMovie
+import com.example.a360moviesapp.domain.models.Movie
 import com.example.a360moviesapp.domain.repository.MovieRepository
 import com.example.a360moviesapp.utils.Loading
 import com.example.a360moviesapp.utils.NotStarted
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val movieRepository: MovieRepository
 ) : ViewModel() {
-    var state : MutableState<MovieScreen>  = mutableStateOf(MovieScreen("",NotStarted<NetworkMovie>()))
+    var state : MutableState<MovieScreen>  = mutableStateOf(MovieScreen("",NotStarted<Movie>()))
         private set
 
 
@@ -33,13 +34,13 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun resetState() {
-        state.value = MovieScreen("",NotStarted<NetworkMovie>())
+        state.value = MovieScreen("",NotStarted<Movie>())
     }
 }
 
 data class MovieScreen(
     val searchTitle : String,
-    val fetchData : Resource<NetworkMovie>
+    val fetchData : Resource<Movie>
 ){
-    val isEnable : Boolean get() = searchTitle.isNotEmpty() && fetchData !is Loading<NetworkMovie>
+    val isEnable : Boolean get() = searchTitle.isNotEmpty() && fetchData !is Loading<Movie>
 }

@@ -1,7 +1,8 @@
 package com.example.a360moviesapp.data.repository
 
 import com.example.a360moviesapp.data.api.MoviesApi
-import com.example.a360moviesapp.data.models.NetworkMovie
+import com.example.a360moviesapp.data.models.toMovie
+import com.example.a360moviesapp.domain.models.Movie
 import com.example.a360moviesapp.domain.repository.MovieRepository
 import com.example.a360moviesapp.utils.Error
 import com.example.a360moviesapp.utils.Loading
@@ -17,13 +18,13 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val api: MoviesApi
 ) : MovieRepository {
-    override fun getMovie(title: String): Flow<Resource<NetworkMovie>> = flow {
+    override fun getMovie(title: String): Flow<Resource<Movie>> = flow {
         emit(Loading(null))
         val result = api.getMovies(title)
         if (result.response == "True") {
-            emit(Success(result))
+            emit(Success(result.toMovie()))
         } else {
-            emit(Error<NetworkMovie>("No match element in this API"))
+            emit(Error<Movie>("No match element in this API"))
         }
     }.catch { cause: Throwable ->
         emit(

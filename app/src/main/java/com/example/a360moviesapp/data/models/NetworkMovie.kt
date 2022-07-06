@@ -1,6 +1,7 @@
 package com.example.a360moviesapp.data.models
 
 
+import com.example.a360moviesapp.domain.models.Movie
 import com.squareup.moshi.Json
 
 data class NetworkMovie(
@@ -25,3 +26,10 @@ data class NetworkMovie(
     @Json(name = "Response")
     val response: String
 )
+
+fun NetworkMovie.toMovie() : Movie {
+    return Movie(
+        poster, ratings, title, plot
+    )
+
+}
