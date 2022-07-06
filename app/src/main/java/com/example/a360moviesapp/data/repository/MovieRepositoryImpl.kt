@@ -25,6 +25,8 @@ class MovieRepositoryImpl @Inject constructor(
             emit(Error<NetworkMovie>(h.toString()))
         } catch (e: IOException) {
             emit(Error<NetworkMovie>(e.toString()))
+        } catch (d: Exception) {
+            emit(Error<NetworkMovie>(d.toString()))
         }
     }
 }
