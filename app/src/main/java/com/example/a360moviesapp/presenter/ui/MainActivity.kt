@@ -108,7 +108,7 @@ fun SearchBar(onValueChanged: ((String) -> Unit)) {
 
 @Composable
 fun RatingItem(value : String){
-    Row(Modifier.padding(top = 4.dp)) {
+    Row(Modifier.padding(top = 4.dp,bottom = 4.dp)) {
         Icon(Icons.Default.Star, contentDescription = "Rating")
         Text(modifier = Modifier.padding(start = 4.dp),text = value)
     }
