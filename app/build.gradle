@@ -75,11 +75,15 @@ dependencies {
 
     //moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
+    implementation("com.squareup.moshi:moshi:1.13.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
 
     //couroutine flow
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0'
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.1.0")
 
 
 }
