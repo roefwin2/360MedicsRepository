@@ -21,5 +21,7 @@ data class NetworkMovie(
     @Json(name = "Website")
     val website: String,
     @Json(name = "Year")
-    val year: String
+    val year: String,
+    @Json(name = "Response")
+    val response: String
 )

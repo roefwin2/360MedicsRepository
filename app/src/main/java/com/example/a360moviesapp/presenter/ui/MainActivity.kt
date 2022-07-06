@@ -1,19 +1,28 @@
 package com.example.a360moviesapp.presenter.ui
 
+import android.media.Rating
 import android.os.Bundle
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.a360moviesapp.R
 import com.example.a360moviesapp.data.models.NetworkMovie
 import com.example.a360moviesapp.ui.theme.MoviesAppTheme
 import com.example.a360moviesapp.utils.Error
@@ -98,11 +107,20 @@ fun SearchBar(onValueChanged: ((String) -> Unit)) {
 }
 
 @Composable
+fun RatingItem(value : String){
+    Row(Modifier.padding(top = 4.dp)) {
+        Icon(Icons.Default.Star, contentDescription = "Rating")
+        Text(modifier = Modifier.padding(start = 4.dp),text = value)
+    }
+}
+
+
+@Composable
 fun MovieItem(movie: NetworkMovie) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp)
+            .padding(8.dp)
     ) {
         Row() {
             Image(
@@ -113,6 +131,7 @@ fun MovieItem(movie: NetworkMovie) {
             Column() {
                 Text(text = movie.title)
                 Text(text = movie.plot)
+                RatingItem(value = movie.ratings[0].value)
             }
         }
     }
@@ -127,7 +146,7 @@ fun DefaultPreview() {
                 "", "",
                 "https://m.media-amazon.com/images/M/MV5BYmZkYWRlNWQtOGY0Zi00MWZkLWJiZTktNjRjMDY4MTU2YzAyXkEyXkFqcGdeQXVyMzYzNzc1NjY@._V1_SX300.jpg",
                 "", emptyList(),
-                "top gun", "", "lourd", ""
+                "top gun", "", "lourd", "","True"
             )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Column(

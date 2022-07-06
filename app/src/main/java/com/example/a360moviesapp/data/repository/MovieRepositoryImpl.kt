@@ -19,13 +19,19 @@ class MovieRepositoryImpl @Inject constructor(
 ) : MovieRepository {
     override fun getMovie(title: String): Flow<Resource<NetworkMovie>> = flow {
         emit(Loading(null))
-            val result = api.getMovies(title)
+        val result = api.getMovies(title)
+        if (result.response == "True") {
             emit(Success(result))
+        } else {
+            emit(Error<NetworkMovie>("No match element in this API"))
+        }
     }.catch { cause: Throwable ->
-      emit(when(cause){
-          is HttpException -> Error(cause.message())
-          is IOException -> Error(cause.toString())
-          else -> Error(cause.toString())
-      })
+        emit(
+            when (cause) {
+                is HttpException -> Error(cause.message())
+                is IOException -> Error("Something went wrong with your internet connection")
+                else -> Error("Something went wrong")
+            }
+        )
     }
 }
