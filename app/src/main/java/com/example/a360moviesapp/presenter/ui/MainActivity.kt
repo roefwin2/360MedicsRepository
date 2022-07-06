@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,7 +80,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun SearchBar(onValueChanged: ((String) -> Unit)) {
-    var text by remember {
+    var text by rememberSaveable() {
         mutableStateOf("")
     }
     Column(
