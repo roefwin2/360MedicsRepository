@@ -7,5 +7,5 @@ import retrofit2.http.Query
 interface MoviesApi {
 
     @GET(".")
-    suspend fun getMovies(@Query("t") title : String) : NetworkMovie
+    suspend fun getMovies(@Query("t") title : String,@Query("apikey") apiKey : String = "611b39bd") : NetworkMovie
 }

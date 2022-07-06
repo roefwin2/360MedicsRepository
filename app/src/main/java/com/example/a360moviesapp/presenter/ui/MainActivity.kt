@@ -11,8 +11,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -26,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel : MainActivityViewModel by viewModels()
+    private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,20 +35,24 @@ class MainActivity : ComponentActivity() {
             MoviesAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                   val state  = viewModel.state.value.fetchData
+                    val state = viewModel.state.value.fetchData
                     Column {
                         SearchBar {
                             viewModel.changeTitle(it)
                         }
-                        when(state){
-                           is Loading<NetworkMovie> -> CircularProgressIndicator()
-                            is Error -> Toast.makeText(applicationContext,state.msg,Toast.LENGTH_LONG).show()
+                        when (state) {
+                            is Loading<NetworkMovie> -> CircularProgressIndicator()
+                            is Error -> Toast.makeText(
+                                applicationContext,
+                                state.msg,
+                                Toast.LENGTH_LONG
+                            ).show()
                             is Success -> {
                                 MovieItem(movie = state.data)
                             }
                         }
 
-                        OutlinedButton(onClick = { viewModel.fetchMovie()}) {
+                        OutlinedButton(onClick = { viewModel.fetchMovie() }) {
 
                         }
                     }
@@ -58,10 +63,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun SearchBar(onValueChanged : ((String) -> Unit)) {
-    OutlinedTextField(value = "" , onValueChange = {
-        onValueChanged.invoke(it)
-    } )
+fun SearchBar(onValueChanged: ((String) -> Unit)) {
+    var text by remember {
+        mutableStateOf("")
+    }
+    OutlinedTextField(
+        value = text,
+        label = { Text(text = "Enter Your Name") },
+        onValueChange = {
+            text = it
+            onValueChanged.invoke(text)
+        })
 }
 
 @Composable
@@ -86,10 +98,12 @@ fun MovieItem(movie: NetworkMovie) {
 fun DefaultPreview() {
     MoviesAppTheme {
         val networkMovie =
-            NetworkMovie("", "",
+            NetworkMovie(
+                "", "",
                 "https://m.media-amazon.com/images/M/MV5BYmZkYWRlNWQtOGY0Zi00MWZkLWJiZTktNjRjMDY4MTU2YzAyXkEyXkFqcGdeQXVyMzYzNzc1NjY@._V1_SX300.jpg",
                 "", emptyList(),
-                "top gun", "", "lourd", "")
+                "top gun", "", "lourd", ""
+            )
         MovieItem(movie = networkMovie)
     }
 }
