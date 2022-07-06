@@ -45,21 +45,26 @@ class MainActivity : ComponentActivity() {
                         ) {
                             SearchBar {
                                 viewModel.changeTitle(it)
+                                if (it.isEmpty()) {
+                                    viewModel.resetState()
+                                }
                             }
                             when (state) {
                                 is Loading<NetworkMovie> -> CircularProgressIndicator()
-                                is Error -> Toast.makeText(
-                                    applicationContext,
-                                    state.msg,
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                is Error ->
+                                    Snackbar() {
+                                        Text(text = state.msg)
+                                    }
                                 is Success -> {
                                     MovieItem(movie = state.data)
                                 }
-                                is NotStarted -> {}
+                                is NotStarted -> {
+                                }
                             }
 
-                            OutlinedButton(onClick = { viewModel.fetchMovie() }) {
+                            OutlinedButton(
+                                enabled = viewModel.state.value.isEnable,
+                                onClick = { viewModel.fetchMovie() }) {
                                 Text(text = "Valid")
                             }
 

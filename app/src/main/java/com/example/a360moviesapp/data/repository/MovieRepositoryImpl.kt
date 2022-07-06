@@ -8,6 +8,7 @@ import com.example.a360moviesapp.utils.Loading
 import com.example.a360moviesapp.utils.Resource
 import com.example.a360moviesapp.utils.Success
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -18,15 +19,13 @@ class MovieRepositoryImpl @Inject constructor(
 ) : MovieRepository {
     override fun getMovie(title: String): Flow<Resource<NetworkMovie>> = flow {
         emit(Loading(null))
-        try {
             val result = api.getMovies(title)
             emit(Success(result))
-        } catch (h: HttpException) {
-            emit(Error<NetworkMovie>(h.toString()))
-        } catch (e: IOException) {
-            emit(Error<NetworkMovie>(e.toString()))
-        } catch (d: Exception) {
-            emit(Error<NetworkMovie>(d.toString()))
-        }
+    }.catch { cause: Throwable ->
+      emit(when(cause){
+          is HttpException -> Error(cause.message())
+          is IOException -> Error(cause.toString())
+          else -> Error(cause.toString())
+      })
     }
 }

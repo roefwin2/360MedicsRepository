@@ -31,9 +31,15 @@ class MainActivityViewModel @Inject constructor(
             }
         }
     }
+
+    fun resetState() {
+        state.value = MovieScreen("",NotStarted<NetworkMovie>())
+    }
 }
 
 data class MovieScreen(
     val searchTitle : String,
     val fetchData : Resource<NetworkMovie>
-)
+){
+    val isEnable : Boolean get() = searchTitle.isNotEmpty() && fetchData !is Loading<NetworkMovie>
+}
